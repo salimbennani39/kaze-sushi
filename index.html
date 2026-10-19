@@ -1,0 +1,747 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kaze Sushi · Japanese flavors in Guéliz, Marrakech</title>
+<meta property="og:image" content="https://salimbennani39.github.io/kaze-sushi/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="description" content="Kaze Sushi, 7 Rue Ibn Hanbal, Guéliz, Marrakech. Sushi, poke, gyoza and yakitori, open every day from noon to midnight. Book a table.">
+<meta name="theme-color" content="#D2562A">
+<link rel="icon" href="assets/logo.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="scrollcraft.css">
+<link rel="preload" as="image" href="assets/hero-roll.webp">
+<style>
+  :root {
+    --sc-canvas:     #120E0C;
+    --sc-surface:    #1E1714;
+    --sc-ink:        #FBF0E4;
+    --sc-ink-soft:   #C9B4A3;
+    --sc-accent:     #E9683A;
+    --sc-accent-ink: #1A0E08;
+    --sc-font-display: "Outfit", system-ui, sans-serif;
+    --sc-font-text:    "DM Sans", system-ui, sans-serif;
+    --sc-shadow-color: 18 40% 4%;
+
+    --kaze-orange: #D2562A;
+    --kaze-orange-deep: #B8461D;
+    --kaze-cream: #F4E8D8;
+    --kaze-paper: #FBF3E8;
+    --kaze-coal: #120E0C;
+    --kaze-ink-dark: #1A0E08;
+    --belt-h: 68px;
+  }
+  html { background: var(--kaze-coal); }
+  body { padding-bottom: var(--belt-h); }
+  img { display: block; }
+
+  .skip { position: absolute; left: -999px; top: 0; z-index: 99; background: var(--kaze-paper); color: var(--kaze-ink-dark); padding: var(--sc-3) var(--sc-4); }
+  .skip:focus { left: var(--sc-4); top: var(--sc-4); }
+
+  /* ------------------------------------------------ the object label schema
+     Every dish on the page is labelled the same way: name, their own words,
+     what kind of plate it is, and a plate you can take. */
+  .label { display: grid; gap: var(--sc-2); max-width: 26rem; }
+  .label__name { font-family: var(--sc-font-display); font-weight: 700; font-size: var(--sc-t-xl); line-height: var(--sc-leading-tight); letter-spacing: var(--sc-track-snug); margin: 0; text-wrap: balance; }
+  .label__line { margin: 0; color: var(--label-soft, var(--sc-ink-soft)); text-wrap: pretty; }
+  .label__kind { margin: 0; font-size: var(--sc-t-xs); letter-spacing: var(--sc-track-wide); text-transform: uppercase; font-weight: 600; color: var(--label-soft, var(--sc-ink-soft)); display: flex; align-items: center; gap: var(--sc-2); }
+  .label__kind::before { content: ""; width: 0.9em; height: 0.9em; border-radius: 50%; background: var(--rim, var(--kaze-cream)); box-shadow: inset 0 0 0 2px color-mix(in oklab, var(--kaze-coal) 25%, transparent); }
+
+  .take {
+    justify-self: start; margin-top: var(--sc-2);
+    display: inline-flex; align-items: center; gap: var(--sc-2);
+    font: 600 var(--sc-t-sm)/1 var(--sc-font-text);
+    padding: 0.7rem 1rem 0.7rem 0.75rem; min-height: 44px;
+    border-radius: var(--sc-r-pill);
+    color: var(--take-ink, var(--sc-ink));
+    background: transparent;
+    border: 1.5px solid currentColor;
+    cursor: pointer;
+    transition: transform var(--sc-d-fast) var(--sc-ease-out), background-color var(--sc-d-fast) var(--sc-ease-out), color var(--sc-d-fast) var(--sc-ease-out);
+  }
+  .take::before { content: ""; width: 1.1rem; height: 1.1rem; border-radius: 50%; border: 1.5px solid currentColor; background: radial-gradient(circle, currentColor 0 22%, transparent 24%); opacity: 0.9; }
+  .take:active { transform: scale(0.97); }
+  .take[aria-pressed="true"] { background: var(--take-ink, var(--sc-ink)); color: var(--take-bg, var(--kaze-coal)); border-color: var(--take-ink, var(--sc-ink)); }
+  .take[aria-pressed="true"]::before { background: radial-gradient(circle, currentColor 0 40%, transparent 42%); }
+  @media (hover: hover) and (pointer: fine) {
+    .take:hover { background: color-mix(in oklab, var(--take-ink, var(--sc-ink)) 12%, transparent); }
+    .take[aria-pressed="true"]:hover { background: color-mix(in oklab, var(--take-ink, var(--sc-ink)) 88%, transparent); }
+  }
+  :focus-visible { outline: 2.5px solid var(--focus, var(--sc-accent)); outline-offset: 3px; }
+
+  /* ================================================================ HERO */
+  .hero { --sc-ink: var(--kaze-ink-dark); color: var(--kaze-ink-dark); --label-soft: #3A1F14; --take-ink: var(--kaze-ink-dark); --take-bg: var(--kaze-orange); --focus: var(--kaze-ink-dark); }
+  .hero .sc-stage { background: var(--kaze-orange); }
+  .hero__plane { position: absolute; pointer-events: none; max-width: none; will-change: transform; }
+  .hero__waves {
+    inset: -12% -4%;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='60' viewBox='0 0 120 60'><g fill='none' stroke='%23FBEBDA' stroke-width='2'><g id='s'><circle cx='60' cy='60' r='56'/><circle cx='60' cy='60' r='44'/><circle cx='60' cy='60' r='32'/><circle cx='60' cy='60' r='20'/></g><use href='%23s' x='-60' y='-30'/><use href='%23s' x='60' y='-30'/></g></svg>");
+    background-size: 132px 66px;
+    opacity: 0.16;
+    -webkit-mask-image: radial-gradient(120% 80% at 70% 30%, #000 30%, transparent 78%);
+            mask-image: radial-gradient(120% 80% at 70% 30%, #000 30%, transparent 78%);
+    transform: translate3d(0, calc(var(--sc-p, 0) * -3vh), 0);
+  }
+  .hero__nigiri {
+    left: 0; top: 27vh; height: 38vh; width: auto;
+    filter: blur(1.2px) saturate(0.95);
+    transform: translate3d(0, calc(var(--sc-p, 0) * -7vh), 0);
+  }
+  .hero__mark {
+    position: absolute; left: 50%; top: 47%; margin: 0;
+    font-family: var(--sc-font-display); font-weight: 800;
+    color: #FFF2E4; line-height: 0.8; letter-spacing: -0.045em;
+    text-align: center; white-space: nowrap;
+    transform: translate3d(-50%, calc(-50% - var(--sc-p, 0) * 10vh), 0) scale(calc(1 - var(--sc-p, 0) * 0.08));
+    will-change: transform;
+  }
+  .hero__mark .kaze { display: block; font-size: clamp(7rem, 27vw, 26rem); }
+  .hero__mark .sushi { display: block; font-size: clamp(2.6rem, 9.6vw, 9.25rem); letter-spacing: 0.06em; font-weight: 700; margin-top: 0.12em; }
+  .hero__roll {
+    right: 0; top: 0; height: 64vh; width: auto;
+    transform-origin: 100% 0;
+    filter: drop-shadow(-18px 30px 26px hsl(14 70% 18% / 0.38));
+    /* The hand is cut at the top-right corner of the frame, so that corner is the
+       pivot: the roll grows toward you and the hand never leaves the edge. */
+    transform: scale(calc(1 + var(--sc-p, 0) * 0.34));
+  }
+  .hero__branch {
+    left: -1vw; top: -2vh; width: clamp(14rem, 30vw, 30rem); height: auto;
+    transform: translate3d(0, calc(var(--sc-p, 0) * -26vh), 0) scaleX(-1);
+    filter: blur(0.4px);
+  }
+  .hero__label { position: absolute; left: var(--sc-gutter); bottom: calc(var(--belt-h) + clamp(1.5rem, 6vh, 4rem)); z-index: 5; }
+  .hero__label .label__name { font-size: var(--sc-t-2xl); }
+  .hero__label .label__line { color: #2E170E; font-size: var(--sc-t-lg); }
+  .hero__where {
+    position: absolute; right: var(--sc-gutter); bottom: calc(var(--belt-h) + clamp(1.5rem, 6vh, 4rem)); z-index: 5;
+    margin: 0; text-align: right; font-weight: 600; color: var(--kaze-ink-dark); font-size: var(--sc-t-sm); line-height: 1.5;
+  }
+
+  /* ========================================================= COLLECTION */
+  .menu .sc-stage { background: var(--kaze-coal); }
+  .rail { display: flex; align-items: center; gap: clamp(2rem, 4vw, 4.5rem); height: 100%; padding: 0 var(--sc-gutter) var(--belt-h); width: max-content; }
+  .rail__lead { width: clamp(17rem, 30vw, 27rem); flex: none; }
+  .rail__lead h2 { margin: 0 0 var(--sc-4); }
+  .rail__note { width: clamp(15rem, 22vw, 20rem); flex: none; }
+  .dish { flex: none; width: min(25vw, 42vh); min-width: 15rem; display: grid; gap: var(--sc-5); }
+  .dish__frame { margin: 0; aspect-ratio: 4 / 5; border-radius: var(--sc-r-md); overflow: hidden; box-shadow: var(--sc-e2); background: var(--sc-surface); }
+  .dish__frame img { width: 100%; height: 100%; object-fit: cover; }
+  .dish:nth-child(even) { transform: translateY(5vh); }
+
+  /* ================================================================ CRAFT */
+  .craft { background: #0C0908; padding-block: clamp(4rem, 10vw, 9rem); }
+  .craft__grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: clamp(2rem, 6vw, 7rem); align-items: end; }
+  .craft__photo { margin: 0; aspect-ratio: 4 / 5; max-height: 84vh; border-radius: var(--sc-r-md); overflow: hidden; }
+  .craft__photo img { width: 100%; height: 100%; object-fit: cover; }
+  .craft__copy { padding-bottom: 8vh; }
+  .craft__copy p { margin-top: var(--sc-5); }
+
+  /* ================================================================== TEA */
+  .tea { --sc-ink: #20140E; --sc-ink-soft: #6A5243; color: var(--sc-ink); background: var(--kaze-cream); padding-block: clamp(6rem, 16vw, 14rem); --focus: var(--kaze-orange-deep); }
+  .tea__grid { display: grid; grid-template-columns: 1fr minmax(12rem, 22vw) 0.6fr; gap: clamp(2rem, 5vw, 6rem); align-items: end; }
+  .tea__photo { margin: 0; grid-column: 2; aspect-ratio: 4 / 5; border-radius: 999px 999px var(--sc-r-md) var(--sc-r-md); overflow: hidden; box-shadow: var(--sc-e2); }
+  .tea__photo img { width: 100%; height: 100%; object-fit: cover; }
+  .tea__copy { grid-column: 1; grid-row: 1; align-self: start; }
+  .tea__copy p { margin-top: var(--sc-4); }
+
+  /* ================================================================= BOAT */
+  .boat .sc-stage { background: #0B0807; }
+  .boat__stage { --open: clamp(0, calc((var(--sc-p, 0) - 0.1) / 0.42), 1); --D: min(86vh, 86vw, 56rem); }
+  .porthole {
+    position: absolute; left: 50%; top: calc(50% - var(--belt-h) / 2);
+    width: var(--D); height: var(--D); translate: -50% -50%;
+  }
+  .porthole__img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%;
+    clip-path: circle(calc(9% + var(--open) * 41%) at 50% 50%);
+    transform: scale(calc(1.3 - var(--open) * 0.3));
+    will-change: clip-path, transform;
+  }
+  .porthole__ring {
+    position: absolute; left: 50%; top: 50%; width: calc(18% + var(--open) * 82%); aspect-ratio: 1; translate: -50% -50%;
+    border-radius: 50%; border: 2px solid #F0DCC6; pointer-events: none;
+    opacity: calc(1 - var(--open) * 0.55);
+  }
+  .porthole__mark {
+    position: absolute; left: 50%; top: 50%; width: 18%; translate: -50% -50%; color: var(--sc-accent);
+    opacity: clamp(0, calc(1 - var(--open) * 3), 1);
+    transform: scale(calc(1 + var(--open) * 1.4)) rotate(calc(var(--open) * -40deg));
+  }
+  .boat__ask { position: absolute; left: 50%; top: calc(50% - var(--belt-h) / 2 + var(--D) * 0.14); translate: -50% 0; margin: 0; text-align: center; font-family: var(--sc-font-display); font-weight: 600; font-size: var(--sc-t-xl); white-space: nowrap; }
+  .boat__label { position: absolute; left: var(--sc-gutter); top: calc(50% - var(--belt-h) / 2); translate: 0 -50%; width: min(22rem, calc((100vw - var(--D)) / 2 - var(--sc-gutter) - 1.5rem)); --rim: #0B0807; }
+  .boat__label .label__kind::before { box-shadow: inset 0 0 0 2px var(--sc-accent); }
+  /* The cued element is only the text, parked just outside the circle on the
+     dark ground; the leader line and dot hang off it into the photograph. */
+  .callout { position: absolute; translate: 0 -50%; padding-left: 0.75rem; font-size: var(--sc-t-sm); font-weight: 600; color: var(--sc-ink); white-space: nowrap; pointer-events: none; }
+  .callout i { position: absolute; right: 100%; top: 50%; height: 1.5px; width: var(--len); background: #FFF2E4; }
+  .callout i::before { content: ""; position: absolute; left: -5px; top: -4.5px; width: 10px; height: 10px; border-radius: 50%; background: #FFF2E4; box-shadow: 0 0 0 3px color-mix(in oklab, #0B0807 60%, transparent); }
+
+  /* ================================================================= ROOM */
+  .room { background: #2A1912; --sc-ink-soft: #D6BCA8; padding-block: clamp(5rem, 11vw, 10rem); }
+  .room__grid { display: grid; grid-template-columns: 1.25fr 0.85fr 0.7fr; gap: clamp(1.5rem, 3vw, 3rem); align-items: start; }
+  .room__item { margin: 0; display: grid; gap: var(--sc-4); }
+  .room__item:nth-child(2) { margin-top: 18vh; }
+  .room__item:nth-child(3) { margin-top: 6vh; }
+  .room__img { aspect-ratio: 4 / 5; border-radius: var(--sc-r-md); overflow: hidden; }
+  .room__item:nth-child(3) .room__img { aspect-ratio: 9 / 16; }
+  .room__img img { width: 100%; height: 100%; object-fit: cover; }
+  .room__head { margin: 0 0 clamp(2rem, 5vw, 4rem); max-width: 20ch; }
+
+  /* ================================================================ CLOSE */
+  .book { background: var(--kaze-orange); color: var(--kaze-ink-dark); --sc-ink: var(--kaze-ink-dark); --sc-ink-soft: #3A1F14; --focus: var(--kaze-ink-dark); min-height: calc(100svh - var(--belt-h)); display: grid; align-items: center; padding-block: clamp(4rem, 8vw, 7rem); }
+  .book__grid { display: grid; grid-template-columns: 1fr minmax(20rem, 30rem); gap: clamp(2rem, 6vw, 7rem); align-items: center; }
+  .book__head { margin: 0; font-size: clamp(3.4rem, 9vw, 8.5rem); color: #FFF2E4; letter-spacing: -0.04em; line-height: 0.9; }
+  .book__sub { margin-top: var(--sc-5); max-width: 34ch; color: #2E170E; font-size: var(--sc-t-lg); }
+  .slip {
+    background: var(--kaze-paper); color: var(--kaze-ink-dark); border-radius: var(--sc-r-md);
+    padding: clamp(1.5rem, 3vw, 2.5rem); box-shadow: var(--sc-e3), var(--sc-edge);
+    rotate: -1.2deg; --label-soft: #5B4436; --take-ink: var(--kaze-ink-dark); --focus: var(--kaze-orange-deep);
+    display: grid; gap: var(--sc-5);
+  }
+  .slip .label__kind::before { background: var(--kaze-orange); }
+  .slip dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: var(--sc-2) var(--sc-5); font-size: var(--sc-t-sm); }
+  .slip dt { font-weight: 600; text-transform: uppercase; letter-spacing: var(--sc-track-wide); font-size: var(--sc-t-xs); padding-top: 0.2em; color: #5B4436; }
+  .slip dd { margin: 0; }
+  .slip dd a { color: inherit; text-underline-offset: 0.2em; }
+  .slip__plates { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sc-2); }
+  .slip__plates li { display: flex; align-items: center; justify-content: space-between; gap: var(--sc-3); border-bottom: 1px dashed color-mix(in oklab, var(--kaze-ink-dark) 25%, transparent); padding-bottom: var(--sc-2); }
+  .slip__plates button { font: inherit; font-size: var(--sc-t-xs); background: none; border: 0; color: #5B4436; text-decoration: underline; text-underline-offset: 0.2em; cursor: pointer; min-height: 32px; padding: 0 var(--sc-1); }
+  .slip__empty { color: #5B4436; margin: 0; font-size: var(--sc-t-sm); }
+  .guests { display: flex; align-items: center; gap: var(--sc-3); }
+  .guests button { width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--kaze-ink-dark); background: transparent; font: 600 1.1rem/1 var(--sc-font-text); color: var(--kaze-ink-dark); cursor: pointer; transition: transform var(--sc-d-fast) var(--sc-ease-out); }
+  .guests button:active { transform: scale(0.94); }
+  .guests button:disabled { opacity: 0.35; cursor: not-allowed; }
+  .guests output { min-width: 2ch; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--sc-3); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 1.4rem; border-radius: var(--sc-r-pill); font-weight: 600; text-decoration: none; white-space: nowrap; transition: transform var(--sc-d-fast) var(--sc-ease-out), background-color var(--sc-d-fast) var(--sc-ease-out); }
+  .btn:active { transform: scale(0.97); }
+  .btn--solid { background: var(--kaze-ink-dark); color: #FFF2E4; }
+  .btn--line { border: 1.5px solid var(--kaze-ink-dark); color: var(--kaze-ink-dark); }
+  @media (hover: hover) and (pointer: fine) {
+    .btn--solid:hover { background: #3A1F14; }
+    .btn--line:hover { background: color-mix(in oklab, var(--kaze-ink-dark) 8%, transparent); }
+  }
+  .slip__fine { margin: 0; font-size: var(--sc-t-xs); color: #5B4436; }
+  .foot { margin-top: clamp(3rem, 7vw, 5rem); display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sc-3); font-size: var(--sc-t-xs); color: #2E170E; }
+  .foot a { color: inherit; text-underline-offset: 0.2em; }
+
+  /* ===================================================== THE CONVEYOR (nav)
+     The page's index and the signature move: a kaiten belt along the bottom.
+     Its slats run with your scroll, each plate jumps to its dish, and the
+     plates you take stack at the end of the belt, ready for the booking. */
+  .belt {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--sc-z-chrome);
+    height: var(--belt-h); padding-bottom: env(safe-area-inset-bottom);
+    display: flex; align-items: center; gap: var(--sc-4);
+    padding-inline: clamp(0.75rem, 2vw, 1.5rem);
+    background: #1C1512; color: var(--kaze-paper);
+    box-shadow: 0 -1px 0 color-mix(in oklab, #FFF2E4 10%, transparent), 0 -10px 30px hsl(18 40% 3% / 0.35);
+  }
+  .belt__home { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--kaze-paper); }
+  .belt__home img { width: 22px; height: auto; }
+  .belt__track {
+    position: relative; flex: 1; min-width: 0; height: 52px; border-radius: 10px; overflow: hidden;
+    background:
+      repeating-linear-gradient(90deg, #2B211C 0 22px, #241B17 22px 24px);
+    background-position-x: var(--belt-x, 0px);
+    box-shadow: inset 0 2px 0 #120D0B, inset 0 -2px 0 #3A2C25;
+  }
+  .belt__plates { position: absolute; inset: 0; display: flex; align-items: center; gap: clamp(0.5rem, 1.6vw, 1.4rem); padding-inline: var(--sc-4); overflow-x: auto; scrollbar-width: none; list-style: none; margin: 0; }
+  .belt__plates::-webkit-scrollbar { display: none; }
+  .belt__plates li { flex: none; }
+  .plate {
+    position: relative; width: 44px; height: 44px; border-radius: 50%; padding: 4px; border: 0; cursor: pointer;
+    background: var(--rim, var(--kaze-cream));
+    box-shadow: 0 3px 0 hsl(18 40% 4% / 0.6), inset 0 0 0 2px hsl(18 40% 4% / 0.12);
+    transition: transform var(--sc-d-base) var(--sc-ease-out);
+  }
+  .plate img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+  .plate.is-here { transform: translateY(-5px) scale(1.12); }
+  .plate.is-taken::after { content: ""; position: absolute; right: -2px; top: -2px; width: 12px; height: 12px; border-radius: 50%; background: var(--sc-accent); box-shadow: 0 0 0 2px #1C1512; }
+  @media (hover: hover) and (pointer: fine) { .plate:hover { transform: translateY(-4px); } .plate.is-here:hover { transform: translateY(-6px) scale(1.12); } }
+  .plate .tip { position: absolute; left: 50%; bottom: calc(100% + 12px); translate: -50% 4px; white-space: nowrap; background: var(--kaze-paper); color: var(--kaze-ink-dark); font: 600 var(--sc-t-xs)/1 var(--sc-font-text); padding: 0.45rem 0.6rem; border-radius: var(--sc-r-sm); opacity: 0; pointer-events: none; transition: opacity var(--sc-d-fast) var(--sc-ease-out), translate var(--sc-d-fast) var(--sc-ease-out); }
+  .plate:hover .tip, .plate:focus-visible .tip { opacity: 1; translate: -50% 0; }
+  .belt__book { flex: none; display: flex; align-items: center; gap: var(--sc-3); min-height: 48px; padding: 0 1.1rem 0 0.6rem; border-radius: var(--sc-r-pill); background: var(--kaze-orange); color: var(--kaze-ink-dark); font-weight: 700; text-decoration: none; white-space: nowrap; transition: transform var(--sc-d-fast) var(--sc-ease-out); }
+  .belt__book:active { transform: scale(0.97); }
+  .stack { position: relative; width: 34px; height: 34px; flex: none; }
+  .stack span { position: absolute; left: 1px; width: 32px; height: 9px; border-radius: 50%; background: var(--rim, var(--kaze-cream)); box-shadow: 0 2px 0 hsl(18 40% 8% / 0.55); bottom: calc(var(--i) * 4px + 4px); }
+  .stack:empty { width: 32px; height: 32px; border-radius: 50%; border: 1.5px dashed color-mix(in oklab, var(--kaze-ink-dark) 60%, transparent); }
+  .stack.bump { animation: bump 380ms var(--sc-ease-out); }
+  @keyframes bump { 40% { transform: translateY(-4px) scale(1.08); } }
+  .belt__count { font-variant-numeric: tabular-nums; font-weight: 600; opacity: 0.8; }
+  .flyer { position: fixed; z-index: 90; width: 44px; height: 44px; border-radius: 50%; padding: 4px; background: var(--rim, var(--kaze-cream)); pointer-events: none; box-shadow: var(--sc-e3); }
+  .flyer img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+  @media (prefers-reduced-motion: no-preference) {
+    .belt__plates li { animation: arrive 900ms var(--sc-ease-out) both; animation-delay: calc(var(--n) * 60ms + 300ms); }
+    @keyframes arrive { from { opacity: 0; transform: translateX(-40px); } }
+  }
+
+  /* --------------------------------------------------------------- phones */
+  @media (max-width: 860px) {
+    :root { --belt-h: 64px; }
+    .hero__mark { top: 47%; }
+    .hero__mark .kaze { font-size: 33vw; }
+    .hero__mark .sushi { font-size: 11.8vw; }
+    .hero__roll { height: 34vh; top: 0; }
+    .hero__nigiri { top: 46vh; height: 17vh; }
+    .hero__branch { width: 46vw; }
+    .hero__where { display: none; }
+    .hero__label { right: var(--sc-gutter); }
+    .hero__label .label__name { font-size: var(--sc-t-xl); }
+    .hero__label .label__line { font-size: var(--sc-t-base); }
+    .dish { width: 72vw; min-width: 0; }
+    .dish:nth-child(even) { transform: none; }
+    .dish__frame { aspect-ratio: 1 / 1; }
+    .rail__lead { width: 78vw; }
+    .rail__note { width: 70vw; }
+    .craft__grid, .tea__grid, .book__grid { grid-template-columns: 1fr; }
+    .craft__copy { padding-bottom: 0; }
+    .tea__photo, .tea__copy { grid-column: 1; grid-row: auto; }
+    .tea__photo { width: 62%; justify-self: end; }
+    .boat__stage { --D: min(92vw, 52vh); }
+    .porthole { top: 40%; }
+    .boat__ask { top: calc(40% + var(--D) * 0.14); font-size: var(--sc-t-lg); }
+    .boat__label { left: var(--sc-gutter); right: var(--sc-gutter); width: auto; top: auto; bottom: calc(var(--belt-h) + 1.25rem); translate: none; }
+    .boat__label .label__line { display: none; }
+    .callout { display: none; }
+    .room__grid { grid-template-columns: 1fr 1fr; }
+    .room__item:first-child { grid-column: 1 / -1; }
+    .room__item:nth-child(2), .room__item:nth-child(3) { margin-top: 0; }
+    .room__item:nth-child(3) .room__img { aspect-ratio: 4 / 5; }
+    .slip { rotate: 0deg; }
+    .belt { gap: var(--sc-2); }
+    .belt__home { display: none; }
+    .belt__book .belt__word { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .belt__book { padding: 0 0.9rem 0 0.6rem; }
+  }
+  @media (max-width: 380px) { .belt__book .belt__count { display: none; } }
+
+  /* ------------------------------------------------------- reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .hero__plane, .hero__mark { transform: none !important; }
+    .hero__mark { translate: -50% -50%; }
+    .hero__branch { transform: scaleX(-1) !important; }
+    .boat__stage { --open: 1; }
+    .porthole__img { transform: none; }
+    .boat__ask { display: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#menu">Skip to the menu</a>
+<span data-sc-progress></span>
+<div class="sc-grain" aria-hidden="true"></div>
+
+<main id="top">
+
+  <!-- 1 · DELIGHT. Object one, already labelled. Five planes: seigaiha print,
+       a far nigiri, the wordmark, the tempura roll held from the top edge, and
+       a blossom branch in front of everything. The hand's edge is the pivot. -->
+  <section class="hero" id="tempura-roll" data-sc-act="pin" data-sc-span="1.8">
+    <div data-sc-stage>
+      <div class="hero__plane hero__waves" aria-hidden="true"></div>
+      <img class="hero__plane hero__nigiri" src="assets/hero-nigiri.webp" width="423" height="526" alt="" aria-hidden="true">
+      <h1 class="hero__mark"><span class="kaze">KAZE</span><span class="sushi">SUSHI</span></h1>
+      <img class="hero__plane hero__roll" src="assets/hero-roll.webp" width="661" height="647" alt="A crispy tempura sushi roll held up in chopsticks">
+      <img class="hero__plane hero__branch" src="assets/branch.webp" width="437" height="338" alt="" aria-hidden="true">
+
+      <div class="hero__label label" data-sc-cue="0 0.9 0" style="--rim: var(--kaze-orange-deep)">
+        <h2 class="label__name">Tempura roll</h2>
+        <p class="label__line">Crispy on the outside, melting on the inside.</p>
+        <button class="take" type="button" data-take="tempura-roll" aria-pressed="false">Take a plate</button>
+      </div>
+      <p class="hero__where" data-sc-cue="0 0.9 0">7 Rue Ibn Hanbal, Guéliz<br>Every day, 12:00 to 00:00</p>
+    </div>
+  </section>
+
+  <!-- 2 · APPETITE. The collection, sideways. Same label for every dish. -->
+  <section class="menu" id="menu" data-sc-act="pan" data-sc-span="4.0" aria-label="The menu">
+    <div data-sc-stage>
+      <div class="rail" data-sc-pan="0">
+        <div class="rail__lead">
+          <h2 class="sc-display sc-display--lg">The menu, plate&nbsp;by&nbsp;plate.</h2>
+          <p class="sc-body">Rolled, sliced, steamed and grilled at 7 Rue Ibn Hanbal. Take a plate of anything you want to try. It goes on your stack at the end of the belt.</p>
+        </div>
+
+        <article class="dish" id="uramaki" style="--rim: var(--kaze-cream)">
+          <figure class="dish__frame" data-sc-tilt="5"><img src="assets/dish-rolls.webp" width="749" height="940" loading="lazy" alt="Uramaki rolls in sesame and tobiko on a black plate"></figure>
+          <div class="label">
+            <h3 class="label__name">Uramaki selection</h3>
+            <p class="label__line">Every piece tells a story of flavor and precision.</p>
+            <p class="label__kind">Rolls</p>
+            <button class="take" type="button" data-take="uramaki" aria-pressed="false">Take a plate</button>
+          </div>
+        </article>
+
+        <article class="dish" id="nigiri" style="--rim: var(--kaze-cream)">
+          <figure class="dish__frame" data-sc-tilt="5"><img src="assets/dish-nigiri.webp" width="752" height="649" loading="lazy" alt="Salmon nigiri beside a seared gyoza and a cut roll"></figure>
+          <div class="label">
+            <h3 class="label__name">Salmon nigiri</h3>
+            <p class="label__line">Simple ingredients, masterfully crafted.</p>
+            <p class="label__kind">Nigiri</p>
+            <button class="take" type="button" data-take="nigiri" aria-pressed="false">Take a plate</button>
+          </div>
+        </article>
+
+        <article class="dish" id="poke" style="--rim: #6E7F4B">
+          <figure class="dish__frame" data-sc-tilt="5"><img src="assets/dish-poke.webp" width="754" height="593" loading="lazy" alt="Salmon poke bowl with pineapple, avocado, seaweed and tobiko"></figure>
+          <div class="label">
+            <h3 class="label__name">Salmon poke bowl</h3>
+            <p class="label__line">Salmon, avocado, pineapple and seaweed in one bowl.</p>
+            <p class="label__kind">Bowl</p>
+            <button class="take" type="button" data-take="poke" aria-pressed="false">Take a plate</button>
+          </div>
+        </article>
+
+        <article class="dish" id="tempura" style="--rim: var(--kaze-orange-deep)">
+          <figure class="dish__frame" data-sc-tilt="5"><img src="assets/dish-tempura.webp" width="757" height="941" loading="lazy" alt="Golden shrimp tempura on salad leaves"></figure>
+          <div class="label">
+            <h3 class="label__name">Shrimp tempura</h3>
+            <p class="label__line">A crispy bite that never disappoints.</p>
+            <p class="label__kind">Fried</p>
+            <button class="take" type="button" data-take="tempura" aria-pressed="false">Take a plate</button>
+          </div>
+        </article>
+
+        <article class="dish" id="gyoza" style="--rim: var(--kaze-orange-deep)">
+          <figure class="dish__frame" data-sc-tilt="5"><img src="assets/dish-gyoza.webp" width="746" height="925" loading="lazy" alt="Chopsticks lifting a gyoza from a bamboo steamer"></figure>
+          <div class="label">
+            <h3 class="label__name">Steamed gyoza</h3>
+            <p class="label__line">Golden, steamed and packed with flavor.</p>
+            <p class="label__kind">Dumplings</p>
+            <button class="take" type="button" data-take="gyoza" aria-pressed="false">Take a plate</button>
+          </div>
+        </article>
+
+        <article class="dish" id="yakitori" style="--rim: var(--kaze-orange-deep)">
+          <figure class="dish__frame" data-sc-tilt="5"><img src="assets/dish-yakitori.webp" width="793" height="985" loading="lazy" alt="Glazed yakitori skewers beside a bowl of rice"></figure>
+          <div class="label">
+            <h3 class="label__name">Yakitori</h3>
+            <p class="label__line">Glazed to perfection, served fresh every day.</p>
+            <p class="label__kind">Grill</p>
+            <button class="take" type="button" data-take="yakitori" aria-pressed="false">Take a plate</button>
+          </div>
+        </article>
+
+        <article class="dish" id="soup" style="--rim: #6E7F4B">
+          <figure class="dish__frame" data-sc-tilt="5"><img src="assets/dish-soup.webp" width="793" height="985" loading="lazy" alt="A steaming bowl of shrimp soup with mushrooms"></figure>
+          <div class="label">
+            <h3 class="label__name">Shrimp soup</h3>
+            <p class="label__line">Nothing beats a steaming bowl of homemade Asian soup.</p>
+            <p class="label__kind">Soup</p>
+            <button class="take" type="button" data-take="soup" aria-pressed="false">Take a plate</button>
+          </div>
+        </article>
+
+        <div class="rail__note">
+          <p class="sc-lede">Poke, rolls, wok noodles, spring rolls and more on the full menu at the table.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · TRUST. A wipe opens on the knife. -->
+  <section class="craft" id="craft" aria-labelledby="craft-h">
+    <div class="sc-wrap craft__grid">
+      <figure class="craft__photo" data-sc-reveal="left" data-sc-reveal-at="0.12 0.5">
+        <img src="assets/craft-salmon.webp" width="757" height="940" loading="lazy" alt="A gloved hand slicing salmon on a white board">
+      </figure>
+      <div class="craft__copy sc-stack" data-sc-in data-sc-stagger="70">
+        <h2 class="sc-display sc-display--lg" id="craft-h">Sliced when you order.</h2>
+        <p class="sc-body">Premium salmon, cut by hand at the moment it is ordered, so it reaches the rice as fresh as it gets.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · CALM. Authored silence before the peak. -->
+  <section class="tea" id="tea" aria-labelledby="tea-h">
+    <div class="sc-wrap tea__grid">
+      <figure class="tea__photo" data-sc-in>
+        <img src="assets/tea.webp" width="746" height="925" loading="lazy" alt="Green tea poured from a cast iron teapot into a small cup">
+      </figure>
+      <div class="tea__copy sc-stack" data-sc-in data-sc-stagger="80">
+        <h2 class="sc-display sc-display--md" id="tea-h">Pour. Sit. Take&nbsp;your&nbsp;time.</h2>
+        <p class="sc-body">Traditional tea, poured one cup at a time, for a slow sushi night.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · AWE. The peak. The logo's circle opens like a porthole onto the boat. -->
+  <section class="boat" id="boat" data-sc-act="pin" data-sc-span="4.6" aria-labelledby="boat-h">
+    <div data-sc-stage class="boat__stage">
+      <div class="porthole">
+        <img class="porthole__img" src="assets/boat.webp" width="757" height="941" loading="lazy" alt="A wooden sushi boat loaded with rolls and nigiri, with a plate of salmon sashimi beside it">
+        <svg class="porthole__mark" viewBox="0 0 100 100" aria-hidden="true">
+          <defs><clipPath id="ring"><circle cx="50" cy="50" r="44"/></clipPath></defs>
+          <g fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round">
+            <circle cx="50" cy="50" r="44"/>
+            <g clip-path="url(#ring)">
+              <path d="M2 50 C 20 24, 58 14, 98 26"/>
+              <path d="M6 70 C 26 44, 60 38, 98 48"/>
+              <path d="M22 92 C 34 66, 62 60, 96 70"/>
+            </g>
+          </g>
+        </svg>
+        <div class="porthole__ring" aria-hidden="true"></div>
+        <span class="callout" style="left:100%; top:38%; --len: calc(var(--D) * 0.56)" data-sc-cue="0.6 0.99 0.08 0.04" aria-hidden="true"><i></i>Rolls &amp; nigiri</span>
+        <span class="callout" style="left:100%; top:62%; --len: calc(var(--D) * 0.28)" data-sc-cue="0.68 0.99 0.08 0.04" aria-hidden="true"><i></i>Salmon sashimi</span>
+      </div>
+      <p class="boat__ask" data-sc-cue="0 0.16 0 0.5">Bringing friends?</p>
+      <div class="boat__label label" data-sc-cue="0.5 0.99 0.1 0.04">
+        <h2 class="label__name" id="boat-h">Sushi boat</h2>
+        <p class="label__line">Fresh sushi, premium sashimi and handcrafted rolls, made to share.</p>
+        <p class="label__kind">For the table</p>
+        <button class="take" type="button" data-take="boat" aria-pressed="false">Take a plate</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · WARMTH. The room, labelled like the dishes. -->
+  <section class="room" id="room" aria-labelledby="room-h">
+    <div class="sc-wrap">
+      <h2 class="sc-display sc-display--lg room__head" id="room-h" data-sc-in>Orange chairs, warm wood, a&nbsp;lit&nbsp;wall.</h2>
+      <div class="room__grid">
+        <figure class="room__item" data-sc-in>
+          <div class="room__img" data-sc-reveal="up" data-sc-reveal-at="0.1 0.42"><img src="assets/room-chairs.webp" width="780" height="981" loading="lazy" alt="The dining room with orange chairs and wooden tables"></div>
+          <figcaption class="label"><span class="label__kind" style="--rim:var(--kaze-orange)">Inside</span></figcaption>
+        </figure>
+        <figure class="room__item" data-sc-in>
+          <div class="room__img" data-sc-reveal="up" data-sc-reveal-at="0.12 0.46"><img src="assets/room-wall.webp" width="780" height="981" loading="lazy" alt="The Kaze Sushi logo lit on the wall above the room"></div>
+          <figcaption class="label"><span class="label__kind" style="--rim:var(--kaze-orange)">The wall</span></figcaption>
+        </figure>
+        <figure class="room__item" data-sc-in>
+          <div class="room__img" data-sc-reveal="up" data-sc-reveal-at="0.14 0.5"><img src="assets/shopfront.webp" width="560" height="986" loading="lazy" alt="The Kaze Sushi shopfront and orange flag on Rue Ibn Hanbal"></div>
+          <figcaption class="label"><span class="label__kind" style="--rim:var(--kaze-orange)">7 Rue Ibn Hanbal</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · RESOLVE. The booking slip, typeset like every other label. -->
+  <section class="book" id="book" aria-labelledby="book-h">
+    <div class="sc-wrap">
+      <div class="book__grid">
+        <div data-sc-in data-sc-stagger="80">
+          <h2 class="sc-display book__head" id="book-h">Come hungry.</h2>
+          <p class="book__sub">Every day from noon to midnight, in the heart of Guéliz.</p>
+        </div>
+        <div class="slip" data-sc-in>
+          <div class="label">
+            <h3 class="label__name">Your table</h3>
+            <p class="label__kind">Booking</p>
+          </div>
+          <dl>
+            <dt>Where</dt><dd><a href="https://www.google.com/maps/search/?api=1&query=Gueliz+Marrakech" target="_blank" rel="noopener">7 Rue Ibn Hanbal, Guéliz, Marrakech</a></dd>
+            <dt>When</dt><dd>Every day, 12:00 to 00:00</dd>
+            <dt>Guests</dt>
+            <dd class="guests">
+              <button type="button" id="g-minus" aria-label="One guest fewer">&minus;</button>
+              <output id="g-count" aria-live="polite">2</output>
+              <button type="button" id="g-plus" aria-label="One guest more">+</button>
+            </dd>
+          </dl>
+          <div>
+            <p class="label__kind" style="margin-bottom:var(--sc-3)">Your plates</p>
+            <ul class="slip__plates" id="slip-plates" aria-live="polite"></ul>
+            <p class="slip__empty" id="slip-empty">No plates yet. Take some from the menu, or just come and see.</p>
+          </div>
+          <div class="actions">
+            <a class="btn btn--solid" href="tel:+34647591229">Book a table</a>
+            <a class="btn btn--line" id="wa" href="https://wa.me/34647591229" target="_blank" rel="noopener">Send on WhatsApp</a>
+          </div>
+          <p class="slip__fine">Calls and messages go to +34 647 591 229. Your plates are a wish list for the conversation, not an order.</p>
+        </div>
+      </div>
+      <footer class="foot">
+        <span>Kaze Sushi Marrakech · Japanese flavors in the heart of Marrakech</span>
+        <a href="#" target="_blank" rel="noopener">Instagram @kaze.sushi</a>
+      </footer>
+    </div>
+  </section>
+
+</main>
+
+<nav class="belt" aria-label="Menu index">
+  <a class="belt__home" href="#top" aria-label="Kaze Sushi, back to the top"><img src="assets/logo.webp" width="100" height="165" alt=""></a>
+  <div class="belt__track">
+    <ul class="belt__plates" id="belt-plates"></ul>
+  </div>
+  <a class="belt__book" href="#book"><span class="stack" id="stack" aria-hidden="true"></span><span class="belt__word">Book a table</span><span class="belt__count" id="belt-count"></span></a>
+</nav>
+
+<script src="scrollcraft.js"></script>
+<script>ScrollCraft.mount(document.body);</script>
+<script>
+/* ---------------------------------------------------------------------------
+   The conveyor. Page-local; the engine is untouched.
+   --------------------------------------------------------------------------- */
+(function () {
+  var DISHES = [
+    { id: 'tempura-roll', name: 'Tempura roll',      img: 'assets/hero-roll.webp',     rim: 'var(--kaze-orange-deep)' },
+    { id: 'uramaki',      name: 'Uramaki selection', img: 'assets/dish-rolls.webp',    rim: 'var(--kaze-cream)' },
+    { id: 'nigiri',       name: 'Salmon nigiri',     img: 'assets/dish-nigiri.webp',   rim: 'var(--kaze-cream)' },
+    { id: 'poke',         name: 'Salmon poke bowl',  img: 'assets/dish-poke.webp',     rim: '#6E7F4B' },
+    { id: 'tempura',      name: 'Shrimp tempura',    img: 'assets/dish-tempura.webp',  rim: 'var(--kaze-orange-deep)' },
+    { id: 'gyoza',        name: 'Steamed gyoza',     img: 'assets/dish-gyoza.webp',    rim: 'var(--kaze-orange-deep)' },
+    { id: 'yakitori',     name: 'Yakitori',          img: 'assets/dish-yakitori.webp', rim: 'var(--kaze-orange-deep)' },
+    { id: 'soup',         name: 'Shrimp soup',       img: 'assets/dish-soup.webp',     rim: '#6E7F4B' },
+    { id: 'boat',         name: 'Sushi boat',        img: 'assets/boat.webp',          rim: '#0B0807' }
+  ];
+  var byId = {}; DISHES.forEach(function (d) { byId[d.id] = d; });
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var KEY = 'kaze-plates';
+
+  var taken = [];
+  try { taken = JSON.parse(localStorage.getItem(KEY) || '[]').filter(function (id) { return byId[id]; }); } catch (e) {}
+  var guests = 2;
+
+  // ---- build the belt -------------------------------------------------------
+  var list = document.getElementById('belt-plates');
+  DISHES.forEach(function (d, n) {
+    var li = document.createElement('li');
+    li.style.setProperty('--n', n);
+    li.innerHTML = '<button class="plate" type="button" data-go="' + d.id + '" style="--rim:' + d.rim + '" aria-label="Go to ' + d.name + '">' +
+      '<img src="' + d.img + '" alt="" loading="lazy"><span class="tip" aria-hidden="true">' + d.name + '</span></button>';
+    list.appendChild(li);
+  });
+  var plates = Array.prototype.slice.call(list.querySelectorAll('.plate'));
+
+  // ---- jumping to a dish ------------------------------------------------------
+  var menu = document.getElementById('menu');
+  var rail = menu.querySelector('.rail');
+  var hero = document.getElementById('tempura-roll');
+  var boat = document.getElementById('boat');
+  var vh = function () { return innerHeight; };
+  function docTop(el) { return el.getBoundingClientRect().top + scrollY; }
+  function railTarget(item) {
+    var travel = Math.max(rail.scrollWidth - innerWidth, 1);
+    var x = item.offsetLeft + item.offsetWidth / 2 - innerWidth / 2;
+    var p = Math.min(Math.max(x / travel, 0), 1);
+    return docTop(menu) + p * (menu.offsetHeight - vh());
+  }
+  function targetFor(id) {
+    if (id === 'tempura-roll') return 0;
+    if (id === 'boat') return docTop(boat) + 0.7 * (boat.offsetHeight - vh());
+    return railTarget(document.getElementById(id));
+  }
+  function go(id) {
+    scrollTo({ top: targetFor(id), behavior: reduce ? 'instant' : 'smooth' });
+  }
+  list.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-go]'); if (b) go(b.getAttribute('data-go'));
+  });
+
+  // Keyboard: a take button inside a pinned or panning act must be parked
+  // where its own cue is open, not merely scrolled on screen.
+  document.addEventListener('focusin', function (e) {
+    var t = e.target.closest && e.target.closest('[data-take]');
+    if (!t) return;
+    var id = t.getAttribute('data-take');
+    if (id === 'boat' || menu.contains(t)) scrollTo({ top: targetFor(id), behavior: 'instant' });
+  });
+
+  // ---- taking plates ----------------------------------------------------------
+  var stack = document.getElementById('stack');
+  var count = document.getElementById('belt-count');
+  var slip = document.getElementById('slip-plates');
+  var empty = document.getElementById('slip-empty');
+  var wa = document.getElementById('wa');
+
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(taken)); } catch (e) {} }
+  function render(bump) {
+    stack.innerHTML = taken.slice(-6).map(function (id, i) {
+      return '<span style="--i:' + i + ';--rim:' + byId[id].rim + '"></span>';
+    }).join('');
+    count.textContent = taken.length ? '· ' + taken.length : '';
+    document.querySelectorAll('[data-take]').forEach(function (b) {
+      var on = taken.indexOf(b.getAttribute('data-take')) > -1;
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.textContent = on ? 'On your stack' : 'Take a plate';
+    });
+    plates.forEach(function (p) { p.classList.toggle('is-taken', taken.indexOf(p.getAttribute('data-go')) > -1); });
+    slip.innerHTML = taken.map(function (id) {
+      return '<li><span>' + byId[id].name + '</span><button type="button" data-drop="' + id + '">Remove</button></li>';
+    }).join('');
+    empty.hidden = taken.length > 0;
+    var msg = 'Hello Kaze Sushi! I would like to book a table for ' + guests + (guests === 1 ? ' person.' : ' people.');
+    if (taken.length) msg += ' Plates I want to try: ' + taken.map(function (id) { return byId[id].name; }).join(', ') + '.';
+    wa.href = 'https://wa.me/34647591229?text=' + encodeURIComponent(msg);
+    document.getElementById('g-count').textContent = guests;
+    document.getElementById('g-minus').disabled = guests <= 1;
+    document.getElementById('g-plus').disabled = guests >= 20;
+    if (bump) { stack.classList.remove('bump'); void stack.offsetWidth; stack.classList.add('bump'); }
+  }
+
+  function fly(fromEl, d) {
+    if (reduce || !fromEl.animate) return;
+    var a = fromEl.getBoundingClientRect(), b = stack.getBoundingClientRect();
+    var el = document.createElement('div');
+    el.className = 'flyer'; el.style.setProperty('--rim', d.rim);
+    el.innerHTML = '<img src="' + d.img + '" alt="">';
+    el.style.left = (a.left + 8) + 'px'; el.style.top = (a.top + a.height / 2 - 22) + 'px';
+    document.body.appendChild(el);
+    var dx = b.left + b.width / 2 - (a.left + 8 + 22), dy = b.top + b.height / 2 - (a.top + a.height / 2);
+    var anim = el.animate([
+      { transform: 'translate(0,0) scale(0.9)', opacity: 1 },
+      { transform: 'translate(' + dx * 0.5 + 'px,' + (dy * 0.5 - 90) + 'px) scale(1.15)', opacity: 1, offset: 0.5 },
+      { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(0.55)', opacity: 0.2 }
+    ], { duration: 720, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' });
+    anim.onfinish = function () { el.remove(); };
+  }
+
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-take]');
+    if (t) {
+      var id = t.getAttribute('data-take'), i = taken.indexOf(id);
+      if (i > -1) { taken.splice(i, 1); render(false); }
+      else { taken.push(id); fly(t, byId[id]); setTimeout(function () { render(true); }, reduce ? 0 : 560); render(false); }
+      save(); return;
+    }
+    var drop = e.target.closest('[data-drop]');
+    if (drop) { taken.splice(taken.indexOf(drop.getAttribute('data-drop')), 1); save(); render(false); }
+  });
+  document.getElementById('g-minus').addEventListener('click', function () { guests = Math.max(1, guests - 1); render(false); });
+  document.getElementById('g-plus').addEventListener('click', function () { guests = Math.min(20, guests + 1); render(false); });
+
+  // ---- the belt runs with the scroll, and the plate you are looking at lifts --
+  var items = DISHES.slice(1, 8).map(function (d) { return document.getElementById(d.id); });
+  var current = null, ticking = false;
+  function frame() {
+    ticking = false;
+    var y = scrollY, h = vh();
+    if (!reduce) list.parentNode.style.setProperty('--belt-x', (-y * 0.35).toFixed(1) + 'px');
+    var here = null;
+    var heroR = hero.getBoundingClientRect(), menuR = menu.getBoundingClientRect(), boatR = boat.getBoundingClientRect();
+    if (heroR.bottom > h * 0.5) here = 'tempura-roll';
+    else if (menuR.top < h * 0.5 && menuR.bottom > h * 0.5) {
+      var best = Infinity;
+      items.forEach(function (el) {
+        var r = el.getBoundingClientRect(), dist = Math.abs(r.left + r.width / 2 - innerWidth / 2);
+        if (r.right > 0 && r.left < innerWidth && dist < best) { best = dist; here = el.id; }
+      });
+    } else if (boatR.top < h * 0.3 && boatR.bottom > h * 0.7) here = 'boat';
+    if (here !== current) {
+      current = here;
+      plates.forEach(function (p) {
+        var on = p.getAttribute('data-go') === here;
+        p.classList.toggle('is-here', on);
+        if (on) p.setAttribute('aria-current', 'true'); else p.removeAttribute('aria-current');
+        if (on && p.parentNode.parentNode.scrollWidth > p.parentNode.parentNode.clientWidth) {
+          var track = p.parentNode.parentNode, off = p.parentNode.offsetLeft - track.clientWidth / 2 + 22;
+          track.scrollTo({ left: off, behavior: reduce ? 'auto' : 'smooth' });
+        }
+      });
+    }
+  }
+  addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
+  addEventListener('resize', frame);
+  render(false); frame();
+})();
+</script>
+</body>
+</html>

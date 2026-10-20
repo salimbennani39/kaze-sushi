@@ -551,8 +551,8 @@
             <p class="slip__empty" id="slip-empty">No plates yet. Take some from the menu, or just come and see.</p>
           </div>
           <div class="actions">
-            <a class="btn btn--solid" href="tel:+34647591229">Book a table</a>
-            <a class="btn btn--line" id="wa" href="https://wa.me/34647591229" target="_blank" rel="noopener">Send on WhatsApp</a>
+            <a class="btn btn--solid" href="https://salimbennani39.github.io/showcase/404.html">Book a table</a>
+            <a class="btn btn--line" id="wa" href="https://salimbennani39.github.io/showcase/404.html" target="_blank" rel="noopener">Send on WhatsApp</a>
           </div>
           <p class="slip__fine">Calls and messages go to +34 647 591 229. Your plates are a wish list for the conversation, not an order.</p>
         </div>
@@ -670,7 +670,7 @@
     empty.hidden = taken.length > 0;
     var msg = 'Hello Kaze Sushi! I would like to book a table for ' + guests + (guests === 1 ? ' person.' : ' people.');
     if (taken.length) msg += ' Plates I want to try: ' + taken.map(function (id) { return byId[id].name; }).join(', ') + '.';
-    wa.href = 'https://wa.me/34647591229?text=' + encodeURIComponent(msg);
+    wa.href = 'https://salimbennani39.github.io/showcase/404.html' + encodeURIComponent(msg);
     document.getElementById('g-count').textContent = guests;
     document.getElementById('g-minus').disabled = guests <= 1;
     document.getElementById('g-plus').disabled = guests >= 20;
@@ -743,10 +743,12 @@
   render(false); frame();
 })();
 </script>
-<script>/* showcase: links that lead nowhere open the Showcase 404 */
+<script>/* showcase: links that lead nowhere, and booking / WhatsApp / call links, open the Showcase 404 */
 (()=>{const U='https://salimbennani39.github.io/showcase/404.html';
-const dead=a=>{const h=(a.getAttribute('href')||'').trim();return h===''||h==='#'||h==='#!'||/^javascript:/i.test(h)};
-addEventListener('click',e=>{if(e.defaultPrevented)return;const a=e.target.closest&&e.target.closest('a');
-if(a&&dead(a)){e.preventDefault();location.href=U;}});})();</script>
+const dead=a=>{const h=(a.getAttribute('href')||'').trim();return h===''||h==='#'||h==='#!'||/^javascript:/i.test(h)||/^(tel:|sms:|mailto:|https?:\/\/(api\.|web\.)?(wa\.me|whatsapp\.com))/i.test(h)};
+addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a');if(!a)return;
+const h=(a.getAttribute('href')||'').trim();const contact=/^(tel:|sms:|mailto:|https?:)/i.test(h);
+if(dead(a)&&(contact||!e.defaultPrevented)){e.preventDefault();e.stopImmediatePropagation();location.href=U;}},true);
+const o=window.open;window.open=function(u){if(/(wa\.me|whatsapp\.com|^tel:)/i.test(String(u||'')))return location.href=U,null;return o.apply(this,arguments)};})();</script>
 </body>
 </html>
